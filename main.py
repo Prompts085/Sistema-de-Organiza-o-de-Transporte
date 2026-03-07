@@ -1,18 +1,17 @@
 
 rotas_vagas = {
-    "centro": 45,
-    "localidade": 50, #no primeiro commit tava cidade-vizinha
-    "zona-rural": 30
+    "centro": {"matutino": 45, "vespertino": 35},
+    "localidade": {"matutino": 30, "vespertino": 20},
+    "zona-rural": {"matutino": 35, "vespertino": 40}
 }
 
-turnos = ["matutino", "vespertino"]
 alunos = []
 
-def dados_alunos(listaRotas, turnoLista):
+def dados_alunos(listaRotas):
     nome = input("Diga seu nome: ")
     
     while True:
-        turno = input(f"Qual o turno {turnoLista}: ").lower()
+        turno = input(f"Qual o turno (matutino ou vespertino): ").lower()
         if turno == "matutino" or turno == "vespertino":
             break
         print("Turno inválido, deve ser matutino ou vespertino (desse jeito)")
@@ -21,7 +20,7 @@ def dados_alunos(listaRotas, turnoLista):
     print(f"{listaRotas}")
 
     while True:
-        rota = input("Qual é a rota: ").lower()
+        rota = input("\nQual é a rota: ").lower()
         if rota in listaRotas:
             break
         print("Rota inválida, reveja as opções de rotas acima amigo(a)")
@@ -29,15 +28,17 @@ def dados_alunos(listaRotas, turnoLista):
     return {"nome": nome, "turno": turno, "rota": rota}
 
 def organizar_vagas(aluno, vagas):
-    rota_escolhida = aluno['rota']
-    if vagas[rota_escolhida] > 0:
-        vagas[rota_escolhida] -= 1
+    rota = aluno['rota']
+    turno = aluno['turno']
+
+    if vagas[rota][turno] > 0:
+        vagas[rota][turno] -= 1
         return True
     else:
         return False
 
 while True:
-    novo_aluno = dados_alunos(rotas_vagas, turnos)
+    novo_aluno = dados_alunos(rotas_vagas)
     
     if organizar_vagas(novo_aluno, rotas_vagas):
         alunos.append(novo_aluno)
@@ -46,3 +47,9 @@ while True:
         print(f"{novo_aluno['nome']}. Não há vagas para a rota: {novo_aluno['rota']}.")
 
     print(f"Vagas restantes: {rotas_vagas}")
+
+    continuar = input("\nDeseja cadastrar outro aluno(a): (s ou n)").lower()
+    if continuar == "s":
+        continue
+    else:
+        break
