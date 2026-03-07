@@ -1,37 +1,48 @@
+
 rotas_vagas = {
     "centro": 45,
-    "cidades-vizinhas": 50,
+    "localidade": 50, #no primeiro commit tava cidade-vizinha
     "zona-rural": 30
 }
 
-turnos = [ "matutino", "vespetino" ]
+turnos = ["matutino", "vespertino"]
 alunos = []
 
 def dados_alunos(listaRotas, turnoLista):
     nome = input("Diga seu nome: ")
     
-    #Validando turno:
     while True:
-        turno = input(f"Qual o turno {turnoLista}:").lower()
+        turno = input(f"Qual o turno {turnoLista}: ").lower()
         if turno == "matutino" or turno == "vespertino":
             break
-        print("turno inválido, deve ser matutino ou vespertino (desse jeito)")
+        print("Turno inválido, deve ser matutino ou vespertino (desse jeito)")
     
-    #Mostrando as rotas disponiveis
     print("\nRotas disponíveis:")
     print(f"{listaRotas}")
 
-    #Validando rota:
     while True:
-        rota = input(f"Qual é a rota:").lower()
+        rota = input("Qual é a rota: ").lower()
         if rota in listaRotas:
             break
         print("Rota inválida, reveja as opções de rotas acima amigo(a)")
     
     return {"nome": nome, "turno": turno, "rota": rota}
 
-novo_estudante = dados_alunos(rotas_vagas, turnos)
-alunos.append(novo_estudante) #aqui vamos guardar o aluno na variavel dele
+def organizar_vagas(aluno, vagas):
+    rota_escolhida = aluno['rota']
+    if vagas[rota_escolhida] > 0:
+        vagas[rota_escolhida] -= 1
+        return True
+    else:
+        return False
 
-print(f"\nPronto, {novo_estudante['nome']}! você foi pré-cadastrado.")
+while True:
+    novo_aluno = dados_alunos(rotas_vagas, turnos)
+    
+    if organizar_vagas(novo_aluno, rotas_vagas):
+        alunos.append(novo_aluno)
+        print(f"{novo_aluno['nome']}! Você foi cadastrado na rota: {novo_aluno['rota']}.")
+    else:
+        print(f"{novo_aluno['nome']}. Não há vagas para a rota: {novo_aluno['rota']}.")
 
+    print(f"Vagas restantes: {rotas_vagas}")
