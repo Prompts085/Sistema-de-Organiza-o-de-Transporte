@@ -1,7 +1,8 @@
 # Sistema de Organização de Transporte
 
 ## Como baixar o projeto/trabalho:
-- ```git clone https://github.com/Prompts085/Sistema-de-Organiza-o-de-Transporte.git
+
+git clone https://github.com/Prompts085/Sistema-de-Organiza-o-de-Transporte.git
 
 ## Tecnologia utilizada:
 - Python
