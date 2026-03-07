@@ -21,3 +21,6 @@ segurança dos alunos no onibus durante o trajeto, garantindo que todos vão sen
 ### Desenvolvido por:
 - Marcos Cauã de Freitas Barbosa.
 - Materia: Lógica de programação.
+
+### Fonte de pesquisas:
+https://overapi.com/python
