@@ -1,55 +1,56 @@
-
 rotas_vagas = {
-    "centro": {"matutino": 45, "vespertino": 35},
-    "localidade": {"matutino": 30, "vespertino": 20},
-    "zona-rural": {"matutino": 35, "vespertino": 40}
+    "centro": {"manhã": 45, "tarde": 35, "noite": 10},
+    "localidade": {"manhã": 30, "tarde": 20, "noite": 10},
+    "zona-rural": {"manhã": 35, "tarde": 40, "noite": 10}
 }
 
 alunos = []
 
-def dados_alunos(listaRotas):
-    nome = input("Diga seu nome: ")
+def validar_turno(periodo):
+    periodo = periodo.lower()
     
-    while True:
-        turno = input(f"Qual o turno (matutino ou vespertino): ").lower()
-        if turno == "matutino" or turno == "vespertino":
-            break
-        print("Turno inválido, deve ser matutino ou vespertino (desse jeito)")
-    
-    print("\nRotas disponíveis:")
-    print(f"{listaRotas}")
-
-    while True:
-        rota = input("\nQual é a rota: ").lower()
-        if rota in listaRotas:
-            break
-        print("Rota inválida, reveja as opções de rotas acima amigo(a)")
-    
-    return {"nome": nome, "turno": turno, "rota": rota}
-
-def organizar_vagas(aluno, vagas):
-    rota = aluno['rota']
-    turno = aluno['turno']
-
-    if vagas[rota][turno] > 0:
-        vagas[rota][turno] -= 1
-        return True
+    if periodo == "matutino" or periodo == "manhã" or periodo == "manha":
+        return "manhã"
+    elif periodo == "vespertino" or periodo == "tarde":
+        return "tarde"
+    elif periodo == "noturno" or periodo == "noite":
+        return "noite"
     else:
-        return False
+        return None
+
+def colocar_Aluno(nome, rota, turno, vagas):
+    if rota in vagas and turno in vagas[rota]:
+        if vagas[rota][turno] > 0:
+            vagas[rota][turno] -= 1
+            return f"Aluno [{nome}] cadastrado na [{rota}] para o turno da [{turno}]."
+    return False
 
 while True:
-    novo_aluno = dados_alunos(rotas_vagas)
-    
-    if organizar_vagas(novo_aluno, rotas_vagas):
-        alunos.append(novo_aluno)
-        print(f"{novo_aluno['nome']}! Você foi cadastrado na rota: {novo_aluno['rota']}.")
-    else:
-        print(f"{novo_aluno['nome']}. Não há vagas para a rota: {novo_aluno['rota']}.")
+   
+    print("Rotas disponíveis:")
+    print(f"{rotas_vagas}")
 
-    print(f"Vagas restantes: {rotas_vagas}")
+    nome_aluno = input("Nome do aluno: ")
+    rota_desejada = input("Rota (centro/localidade/zona-rural): ").lower()
+    entrada = input("Qual o período (Manhã/Tarde/Noite): ")
+
+    turno_validado = validar_turno(entrada)
+    resultado = colocar_Aluno(nome_aluno, rota_desejada, turno_validado, rotas_vagas)
+
+    if resultado:
+        alunos.append({"nome": nome_aluno, "rota": rota_desejada, "turno": turno_validado})
+        print(resultado)
+    else:
+        print("Erro ao cadastrar. Verifique os dados ou vagas.")
+    
+    print("Rotas atualizadas:")
+    print(f"{rotas_vagas}")
 
     continuar = input("\nDeseja cadastrar outro aluno(a): (s ou n)").lower()
+    
     if continuar == "s":
         continue
     else:
         break
+
+print("\nEncerrando Sistema, Alunos cadastrados:", alunos)
